@@ -31,11 +31,17 @@ const data = [
 class Dashboard extends Component {
   state = {
     loading: false,
+    focused: null,
   };
 
   render() {
-    const dashboardClasses = classnames("dashboard");
-    const renderedPanels = data.map((item) => {
+    const dashboardClasses = classnames("dashboard", {
+      "dashboard--focused": this.state.focused,
+    });
+    const content = this.state.focused
+      ? data.filter((item) => this.state.focused === item.id)
+      : data;
+    const panels = content.map((item) => {
       return (
         <Panel
           key={item.id}
@@ -50,7 +56,7 @@ class Dashboard extends Component {
       return <Loading />;
     }
 
-    return <main className={dashboardClasses}> {renderedPanels}</main>;
+    return <main className={dashboardClasses}> {panels}</main>;
   }
 }
 
